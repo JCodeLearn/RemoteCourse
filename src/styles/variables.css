@@ -1,0 +1,72 @@
+:root {
+  /* === 品牌色 === */
+  --color-primary: #1a5276;
+  --color-primary-light: #2980b9;
+  --color-primary-dark: #0d3b66;
+  --color-primary-surface: #f0f7ff;
+
+  --color-accent: #c41e2a;
+  --color-accent-light: #e84855;
+  --color-accent-dark: #8b0000;
+  --color-accent-surface: #fff5f5;
+
+  /* === 中性色 === */
+  --color-bg: #f5f5f5;
+  --color-bg-white: #ffffff;
+  --color-bg-card: #ffffff;
+  --color-text-primary: #333333;
+  --color-text-secondary: #666666;
+  --color-text-placeholder: #999999;
+  --color-border: #e4e7ed;
+  --color-border-light: #ebeef5;
+
+  /* === Element Plus 覆盖 === */
+  --el-color-primary: var(--color-primary);
+  --el-color-primary-light-3: var(--color-primary-light);
+  --el-color-primary-dark-2: var(--color-primary-dark);
+  --el-color-danger: var(--color-accent);
+
+  /* === 字体 === */
+  --font-family-base: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui,
+    -apple-system, sans-serif;
+  --font-family-code: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-size-xs: 12px;
+  --font-size-sm: 13px;
+  --font-size-base: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 28px;
+
+  /* === 间距 === */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-base: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+
+  /* === 圆角 === */
+  --radius-sm: 4px;
+  --radius-base: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* === 阴影 === */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-dropdown: 0 6px 16px rgba(0, 0, 0, 0.1);
+
+  /* === 布局 === */
+  --header-height: 60px;
+  --footer-height: 60px;
+  --content-max-width: 1400px;
+  --sidebar-width: 240px;
+
+  /* === 过渡 === */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.25s ease;
+  --transition-slow: 0.4s ease;
+}
