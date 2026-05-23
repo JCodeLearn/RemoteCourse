@@ -39,6 +39,29 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function login(data: LoginRequest) {
+    // Mock 登录 (后端未就绪时使用)
+    if (data.email === 'Great@qq.com' && data.password === '123456') {
+      const mockUser: User = {
+        id: 1,
+        username: 'Great',
+        email: 'Great@qq.com',
+        avatarUrl: null,
+        role: 'teacher',
+        status: 'active',
+        createdAt: '2026-05-20T10:00:00Z',
+      }
+      const mockTokens: AuthTokens = {
+        accessToken: 'mock-access-token-' + Date.now(),
+        refreshToken: 'mock-refresh-token-' + Date.now(),
+      }
+      accessToken.value = mockTokens.accessToken
+      refreshToken.value = mockTokens.refreshToken
+      user.value = mockUser
+      saveTokens(mockTokens)
+      localStorage.setItem(USER_KEY, JSON.stringify(mockUser))
+      return
+    }
+
     const result = await post<AuthTokens & { user: User }>('/api/v1/auth/login', data)
     accessToken.value = result.accessToken
     refreshToken.value = result.refreshToken

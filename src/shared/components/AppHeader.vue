@@ -50,14 +50,12 @@ function handleLogout() {
         </el-button>
 
         <!-- 个人头像 -->
-        <el-dropdown trigger="click">
-          <span class="user-area">
-            <el-avatar v-if="authStore.isLoggedIn" :size="32" :src="authStore.user?.avatarUrl" />
-            <el-icon v-else :size="28" color="var(--color-text-placeholder)"><UserFilled /></el-icon>
-          </span>
-
-          <template #dropdown>
-            <template v-if="authStore.isLoggedIn">
+        <template v-if="authStore.isLoggedIn">
+          <el-dropdown trigger="click">
+            <span class="user-area">
+              <el-avatar :size="32" :src="authStore.user?.avatarUrl || '/default-avatar.png'" @click.stop="router.push('/personal')" />
+            </span>
+            <template #dropdown>
               <el-dropdown-item @click="router.push('/personal')">
                 <el-icon><User /></el-icon>个人中心
               </el-dropdown-item>
@@ -68,13 +66,13 @@ function handleLogout() {
                 <el-icon><SwitchButton /></el-icon>退出登录
               </el-dropdown-item>
             </template>
-            <template v-else>
-              <el-dropdown-item @click="router.push('/login')">
-                <el-icon><Key /></el-icon>登录 / 注册
-              </el-dropdown-item>
-            </template>
-          </template>
-        </el-dropdown>
+          </el-dropdown>
+        </template>
+        <template v-else>
+          <span class="user-area" @click="router.push('/login')">
+            <el-avatar :size="32" src="/default-avatar.png" />
+          </span>
+        </template>
       </div>
     </div>
   </header>

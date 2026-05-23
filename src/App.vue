@@ -2,6 +2,7 @@
 import { useAuthStore } from '@/stores/authStore'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import BlankLayout from '@/layouts/BlankLayout.vue'
+import AiAssistant from '@/features/ai/AiAssistant.vue'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -15,4 +16,5 @@ const layout = computed(() => (route.meta.layout === 'blank' ? BlankLayout : Def
 
 <template>
   <component :is="layout" />
+  <AiAssistant />
 </template>
