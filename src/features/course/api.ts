@@ -101,3 +101,83 @@ export async function toggleLike(courseId: number): Promise<boolean> {
   if (detail) detail.isLiked = !detail.isLiked
   return detail?.isLiked ?? false
 }
+
+// ====== 评论 ======
+
+export interface CommentItem {
+  id: number; courseId: number; userId: number; username: string; userAvatar: string | null
+  parentId: number | null; content: string; likeCount: number; isLiked: boolean
+  createdAt: string; replies: CommentItem[]
+  status: 'sending' | 'ok'  // 乐观更新标记
+}
+
+const MOCK_COMMENTS: CommentItem[] = [
+  { id: 1, courseId: 1, userId: 10, username: '张三', userAvatar: null, parentId: null, content: '讲得很清楚！期待后续更新。', likeCount: 12, isLiked: false, createdAt: '2026-05-24T10:00:00Z', status: 'ok', replies: [
+    { id: 3, courseId: 1, userId: 1, username: '张教授', userAvatar: null, parentId: 1, content: '谢谢支持！后续会更新更多内容。', likeCount: 5, isLiked: true, createdAt: '2026-05-23T10:00:00Z', status: 'ok', replies: [] },
+  ]},
+  { id: 2, courseId: 1, userId: 11, username: '李四', userAvatar: null, parentId: null, content: '有人能解释一下第三章浮点数的概念吗？有点困惑。', likeCount: 8, isLiked: false, createdAt: '2026-05-23T18:00:00Z', status: 'ok', replies: [
+    { id: 4, courseId: 1, userId: 12, username: '王五', userAvatar: null, parentId: 2, content: '浮点数主要通过IEEE 754标准表示，你可以看第3集视频的讲解。', likeCount: 3, isLiked: false, createdAt: '2026-05-23T20:00:00Z', status: 'ok', replies: [] },
+    { id: 5, courseId: 1, userId: 1, username: '张教授', userAvatar: null, parentId: 2, content: '很好的问题！建议先复习第2集的整数表示，再回来看浮点数。', likeCount: 7, isLiked: false, createdAt: '2026-05-24T08:00:00Z', status: 'ok', replies: [] },
+  ]},
+  { id: 6, courseId: 1, userId: 13, username: '赵六', userAvatar: null, parentId: null, content: '已看完所有课程，收获很大！推荐给其他同学。', likeCount: 15, isLiked: true, createdAt: '2026-05-22T12:00:00Z', status: 'ok', replies: [] },
+]
+
+export async function getComments(courseId: number): Promise<CommentItem[]> {
+  await new Promise(r => setTimeout(r, 300))
+  return MOCK_COMMENTS.filter(c => c.courseId === courseId)
+}
+
+export async function postComment(courseId: number, parentId: number | null, content: string): Promise<CommentItem> {
+  await new Promise(r => setTimeout(r, 200))
+  const c: CommentItem = {
+    id: Date.now(), courseId, userId: 1, username: 'Great', userAvatar: null,
+    parentId, content, likeCount: 0, isLiked: false,
+    createdAt: new Date().toISOString(), replies: [],
+  }
+  if (parentId) {
+    const parent = MOCK_COMMENTS.find(x => x.id === parentId)
+    if (parent) parent.replies.push(c)
+  } else {
+    MOCK_COMMENTS.unshift(c)
+  }
+  return c
+}
+
+export async function toggleCommentLike(commentId: number): Promise<boolean> {
+  await new Promise(r => setTimeout(r, 100))
+  for (const c of MOCK_COMMENTS) {
+    if (c.id === commentId) { c.isLiked = !c.isLiked; c.likeCount += c.isLiked ? 1 : -1; return c.isLiked }
+    const reply = c.replies.find(r => r.id === commentId)
+    if (reply) { reply.isLiked = !reply.isLiked; reply.likeCount += reply.isLiked ? 1 : -1; return reply.isLiked }
+  }
+  return false
+}
+
+// ====== 讨论空间 ======
+
+export interface DiscussionMessage {
+  id: number; senderId: number; senderName: string; senderAvatar: string | null
+  content: string; createdAt: string
+}
+
+const MOCK_DISCUSSION: DiscussionMessage[] = [
+  { id: 1, senderId: 10, senderName: '张三', senderAvatar: null, content: '有人能解释一下第三章浮点数的概念吗？', createdAt: '2026-05-24T14:00:00Z' },
+  { id: 2, senderId: 1, senderName: '张教授', senderAvatar: null, content: '可以看第3集视频的讲解，我在讨论区也放了一份补充资料。', createdAt: '2026-05-24T14:05:00Z' },
+  { id: 3, senderId: 11, senderName: '李四', senderAvatar: null, content: '谢谢老师！资料很有帮助。', createdAt: '2026-05-24T14:10:00Z' },
+  { id: 4, senderId: 13, senderName: '赵六', senderAvatar: null, content: '已经全部看完了，课程质量很高！', createdAt: '2026-05-24T15:00:00Z' },
+]
+
+export async function getDiscussionMessages(): Promise<DiscussionMessage[]> {
+  await new Promise(r => setTimeout(r, 300))
+  return MOCK_DISCUSSION
+}
+
+export async function sendDiscussionMessage(content: string): Promise<DiscussionMessage> {
+  await new Promise(r => setTimeout(r, 200))
+  const msg: DiscussionMessage = {
+    id: Date.now(), senderId: 1, senderName: 'Great', senderAvatar: null,
+    content, createdAt: new Date().toISOString(),
+  }
+  MOCK_DISCUSSION.push(msg)
+  return msg
+}

@@ -5,6 +5,7 @@ import UpTeacherInfo from './UpTeacherInfo.vue'
 import EpisodeList from './EpisodeList.vue'
 
 defineProps<{
+  courseId: number
   episodes: Episode[]
   teacherName: string
   teacherAvatar: string | null
@@ -14,7 +15,9 @@ defineProps<{
 
 <template>
   <aside class="course-sidebar">
+    <router-link :to="`/course/${courseId}/discussion`" style="text-decoration:none">
     <EnterCourseSpace :is-enrolled="isEnrolled" />
+  </router-link>
     <UpTeacherInfo :teacher-name="teacherName" :teacher-avatar="teacherAvatar" />
     <EpisodeList :episodes="episodes" />
   </aside>

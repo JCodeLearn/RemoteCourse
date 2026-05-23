@@ -17,7 +17,7 @@ const activeMenu = ref('profile')
         <ProfilePanel v-if="activeMenu === 'profile'" />
         <PasswordPanel v-else-if="activeMenu === 'password'" />
         <HistoryPanel v-else-if="activeMenu === 'history'" />
-        <MyVideosPanel v-else-if="activeMenu === 'myVideos' || activeMenu === 'creator'" />
+        <MyVideosPanel v-else-if="activeMenu === 'myVideos'" />
       </main>
     </div>
   </div>

@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { useUiStore } from '@/stores/uiStore'
-
-const uiStore = useUiStore()
+const emit = defineEmits<{ toggle: [] }>()
 </script>
 
 <template>
-  <button class="ai-float-btn" @click="uiStore.toggleAiPanel()">
+  <button class="ai-float-btn" @click="emit('toggle')">
     <el-icon :size="26"><MagicStick /></el-icon>
   </button>
 </template>

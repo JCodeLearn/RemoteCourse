@@ -21,7 +21,6 @@ const mainMenus = [
 
 const teacherMenus = [
   { key: 'myVideos', label: '我的发布', icon: 'VideoCamera' },
-  { key: 'creator', label: '创作中心', icon: 'Edit' },
 ]
 
 function handleSwitchAccount() {
@@ -41,9 +40,7 @@ function handleLogout() {
       <el-avatar :size="56" :src="authStore.user?.avatarUrl || '/default-avatar.png'" />
       <div class="user-info">
         <span class="user-name">{{ authStore.user?.username }}</span>
-        <el-tag :type="authStore.isTeacher ? 'warning' : 'primary'" size="small">
-          {{ authStore.isTeacher ? '教师' : '学生' }}
-        </el-tag>
+        <span class="level-badge">V{{ authStore.user?.level ?? 0 }}</span>
       </div>
     </div>
 
@@ -72,6 +69,15 @@ function handleLogout() {
       >
         <el-icon :size="16"><component :is="m.icon" /></el-icon>
         <span>{{ m.label }}</span>
+      </button>
+
+      <button
+        v-if="authStore.isTeacher"
+        class="menu-item"
+        @click="router.push('/management')"
+      >
+        <el-icon :size="16"><Edit /></el-icon>
+        <span>创作中心</span>
       </button>
     </nav>
 
@@ -111,6 +117,14 @@ function handleLogout() {
 }
 .user-name { font-size: var(--font-size-md); font-weight: 600; }
 .user-info { display: flex; flex-direction: column; gap: 4px; }
+
+.level-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 18px;
+  background: rgba(255,255,255,0.25); color: #fff;
+  border-radius: 4px; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.5px;
+}
 
 .menu-list {
   flex: 1;

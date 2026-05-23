@@ -1,15 +1,44 @@
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
 import { useUiStore } from '@/stores/uiStore'
+import { ElMessage } from 'element-plus'
+import { getUnreadCount } from '@/features/inbox/api'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const uiStore = useUiStore()
 
+const unreadCount = ref(0)
+let unreadTimer: ReturnType<typeof setInterval> | null = null
+
+onMounted(async () => {
+  if (authStore.isLoggedIn) {
+    unreadCount.value = await getUnreadCount()
+    // Phase 5 改为 WebSocket 实时推送
+    unreadTimer = setInterval(async () => {
+      if (document.visibilityState === 'visible') {
+        unreadCount.value = await getUnreadCount()
+      }
+    }, 30000)
+  }
+})
+
+onUnmounted(() => { if (unreadTimer) clearInterval(unreadTimer) })
+
 function handleLogout() {
   authStore.logout()
   router.push('/home')
+}
+
+function handleAiClick() {
+  if (!authStore.isLoggedIn) {
+    ElMessage.warning('请先登录后使用小映助手')
+    router.push('/login')
+    return
+  }
+  uiStore.toggleAiPanel()
 }
 </script>
 
@@ -29,22 +58,24 @@ function handleLogout() {
           <span>加入课程</span>
         </el-button>
 
-        <el-button class="header-btn" size="small" round>
+        <el-button class="header-btn" size="small" round @click="router.push('/classes')">
           <el-icon :size="16"><Collection /></el-icon>
           <span>课程中心</span>
         </el-button>
 
-        <el-button class="header-btn" size="small" round>
+        <el-button class="header-btn" size="small" round @click="router.push('/history')">
           <el-icon :size="16"><Clock /></el-icon>
           <span>历史</span>
         </el-button>
 
-        <el-button class="header-btn" size="small" round @click="router.push('/inbox')">
-          <el-icon :size="16"><Bell /></el-icon>
-          <span>收件箱</span>
-        </el-button>
+        <el-badge :value="unreadCount" :hidden="unreadCount === 0" :max="99">
+          <el-button class="header-btn" size="small" round @click="router.push('/inbox')">
+            <el-icon :size="16"><Bell /></el-icon>
+            <span>消息</span>
+          </el-button>
+        </el-badge>
 
-        <el-button class="header-btn ai-btn" size="small" round @click="uiStore.toggleAiPanel()">
+        <el-button class="header-btn ai-btn" size="small" round @click="handleAiClick">
           <el-icon :size="16"><MagicStick /></el-icon>
           <span>小映助手</span>
         </el-button>

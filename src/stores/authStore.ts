@@ -47,6 +47,7 @@ export const useAuthStore = defineStore('auth', () => {
         email: 'Great@qq.com',
         avatarUrl: null,
         role: 'teacher',
+        level: 4,
         status: 'active',
         createdAt: '2026-05-20T10:00:00Z',
       }

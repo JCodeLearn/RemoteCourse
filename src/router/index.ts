@@ -31,9 +31,28 @@ const router = createRouter({
       props: true,
     },
     {
+      path: '/course/:id/discussion',
+      name: 'courseDiscussion',
+      component: () => import('@/features/course/components/DiscussionPage.vue'),
+      props: true,
+      meta: { requiresAuth: true },
+    },
+    {
       path: '/management',
       name: 'management',
       component: () => import('@/features/management/index.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/classes',
+      name: 'classes',
+      component: () => import('@/features/classes/index.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/history',
+      name: 'history',
+      component: () => import('@/features/history/index.vue'),
       meta: { requiresAuth: true },
     },
     {

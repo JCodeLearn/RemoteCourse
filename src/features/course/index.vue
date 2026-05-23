@@ -36,10 +36,11 @@ onMounted(() => {
             :cover-url="detail.course.coverUrl"
             :category-id="detail.course.categoryId"
           />
-          <CommentSection :comment-count="detail.course.commentCount" />
+          <CommentSection :course-id="detail.course.id" :comment-count="detail.course.commentCount" />
         </div>
 
         <CourseSidebar
+          :course-id="detail.course.id"
           :episodes="detail.episodes"
           :teacher-name="detail.course.teacherName"
           :teacher-avatar="detail.course.teacherAvatar"

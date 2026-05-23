@@ -27,10 +27,8 @@ const user = authStore.user
           <span class="info-value">{{ user?.email }}</span>
         </div>
         <div class="info-item">
-          <span class="info-label">角色</span>
-          <el-tag :type="authStore.isTeacher ? 'warning' : 'primary'" size="small">
-            {{ authStore.isTeacher ? '教师' : '学生' }}
-          </el-tag>
+          <span class="info-label">等级</span>
+          <span class="level-badge-lg">V{{ user?.level ?? 0 }}</span>
         </div>
         <div class="info-item">
           <span class="info-label">注册时间</span>
@@ -91,5 +89,13 @@ const user = authStore.user
 .info-value {
   font-size: var(--font-size-sm);
   color: var(--color-text-primary);
+}
+
+.level-badge-lg {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 36px; height: 22px; padding: 0 6px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  color: #fff; border-radius: 4px;
+  font-size: var(--font-size-xs); font-weight: 700; letter-spacing: 0.5px;
 }
 </style>
